@@ -16,6 +16,12 @@ struct ContentView: View {
     @State private var showingScore = false
     @State private var scoreTitle = ""
     
+    // needed for resetting the game
+    @State private var questionsAsked = 0
+    @State private var gameOver = false
+    var MAX_ROUNDS = 8
+    
+    
     var body: some View {
         // needed to make the background grey
         ZStack {
@@ -76,11 +82,17 @@ struct ContentView: View {
             .padding()
             
         }
-        // button to keep the game going
+        // keep the game going
         .alert(scoreTitle, isPresented: $showingScore) {
             Button("Continue", action: askQuestion)
         } message: {
             Text("Your score is \(score)")
+        }
+        // end after MAX_ROUNDS tries
+        .alert("The game has ended.", isPresented: $gameOver) {
+            Button("Start over", role: .destructive, action: reset)
+        } message: {
+            Text("You got \(score) of \(MAX_ROUNDS) questions correct")
         }
     }
     
@@ -93,13 +105,25 @@ struct ContentView: View {
             scoreTitle = "Incorrect - that is the flag of \(countries[number])"
         }
         
-        showingScore = true
+        questionsAsked = questionsAsked + 1
+        
+        if questionsAsked == MAX_ROUNDS {
+            gameOver = true
+        } else {
+            showingScore = true
+        }
     }
     
     // ask another question to keep the game going
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+    }
+    
+    // reset variables
+    func reset() {
+        score = 0
+        questionsAsked = 0
     }
 }
 
