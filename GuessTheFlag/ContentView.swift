@@ -12,6 +12,7 @@ struct ContentView: View {
     @State private var correctAnswer = Int.random(in: 0...2)  // whether it is the first, second, or third flag
     
     // needed so we can update in flagTapped
+    @State private var score = 0
     @State private var showingScore = false
     @State private var scoreTitle = ""
     
@@ -66,7 +67,7 @@ struct ContentView: View {
                 Spacer()
                 
                 // show score
-                Text("Score: ???")
+                Text("Score: \(score)")
                     .font(.title)
                     .fontWeight(.bold)
                 
@@ -79,16 +80,17 @@ struct ContentView: View {
         .alert(scoreTitle, isPresented: $showingScore) {
             Button("Continue", action: askQuestion)
         } message: {
-            Text("Your score is ???")
+            Text("Your score is \(score)")
         }
     }
     
     // update the score when the user makes a guess
     func flagTapped (_ number: Int) {
         if number == correctAnswer {
-            scoreTitle = "Correct"
+            scoreTitle = "Correct!"
+            score = score + 1
         } else {
-            scoreTitle = "Incorrect"
+            scoreTitle = "Incorrect - that is the flag of \(countries[number])"
         }
         
         showingScore = true
