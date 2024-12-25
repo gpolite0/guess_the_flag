@@ -21,8 +21,9 @@ struct ContentView: View {
     @State private var gameOver = false
     var MAX_ROUNDS = 8
     
-    
+    // main view
     var body: some View {
+        
         // needed to make the background grey
         ZStack {
             Color.gray
@@ -90,7 +91,7 @@ struct ContentView: View {
         }
         // end after MAX_ROUNDS tries
         .alert("The game has ended.", isPresented: $gameOver) {
-            Button("Start over", role: .destructive, action: reset)
+            Button("Start over", action: reset)
         } message: {
             Text("You got \(score) of \(MAX_ROUNDS) questions correct")
         }
@@ -100,13 +101,14 @@ struct ContentView: View {
     func flagTapped (_ number: Int) {
         if number == correctAnswer {
             scoreTitle = "Correct!"
-            score = score + 1
+            score += 1
         } else {
             scoreTitle = "Incorrect - that is the flag of \(countries[number])"
         }
         
-        questionsAsked = questionsAsked + 1
+        questionsAsked += 1
         
+        // change state depending on whether this was the last round or not
         if questionsAsked == MAX_ROUNDS {
             gameOver = true
         } else {
@@ -124,6 +126,7 @@ struct ContentView: View {
     func reset() {
         score = 0
         questionsAsked = 0
+        askQuestion()
     }
 }
 
