@@ -16,37 +16,64 @@ struct ContentView: View {
     @State private var scoreTitle = ""
     
     var body: some View {
-        // needed to make the background blue
+        // needed to make the background grey
         ZStack {
             Color.gray
                 .ignoresSafeArea()
             
-            // seperate words from flag pictures
-            VStack(spacing: 30) {
+            // seperate score from flags
+            VStack {
                 
-                // words
-                VStack {
-                    Text("Tap the flag of")
-                        .font(.subheadline)
-                        .foregroundStyle(.black)
-                    Text(countries[correctAnswer])  // name of correct country
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.black)
-                }
+                Spacer()
                 
-                // three flag pictures
-                ForEach(0..<3) { number in
-                    Button {
-                        flagTapped(number)
-                    } label: {
-                        Image(countries[number])
-                            .clipShape(.rect(cornerRadius: 10))
-                            .shadow(radius: 5)
+                // game title
+                Text("Guess the Flag")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                
+                // seperate words from flag pictures
+                VStack(spacing: 15) {
+                    
+                    // words
+                    VStack {
+                        Text("Tap the flag of")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                        Text(countries[correctAnswer])  // name of correct country
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.black)
                     }
                     
+                    // three flag pictures
+                    ForEach(0..<3) { number in
+                        Button {
+                            flagTapped(number)
+                        } label: {
+                            Image(countries[number])
+                                .clipShape(.rect(cornerRadius: 10))
+                                .shadow(radius: 5)
+                        }
+                        
+                    }
                 }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
+                .background(.regularMaterial)
+                .clipShape(.rect(cornerRadius: 20))
+                
+                Spacer()
+                Spacer()
+                
+                // show score
+                Text("Score: ???")
+                    .font(.title)
+                    .fontWeight(.bold)
+                
+                Spacer()
             }
+            .padding()
+            
         }
         // button to keep the game going
         .alert(scoreTitle, isPresented: $showingScore) {
