@@ -18,7 +18,7 @@ struct ContentView: View {
     var body: some View {
         // needed to make the background blue
         ZStack {
-            Color.blue
+            Color.gray
                 .ignoresSafeArea()
             
             // seperate words from flag pictures
@@ -27,11 +27,12 @@ struct ContentView: View {
                 // words
                 VStack {
                     Text("Tap the flag of")
-                        .foregroundStyle(.white)
+                        .font(.subheadline)
+                        .foregroundStyle(.black)
                     Text(countries[correctAnswer])  // name of correct country
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.black)
                 }
                 
                 // three flag pictures
@@ -40,6 +41,8 @@ struct ContentView: View {
                         flagTapped(number)
                     } label: {
                         Image(countries[number])
+                            .clipShape(.rect(cornerRadius: 10))
+                            .shadow(radius: 5)
                     }
                     
                 }
